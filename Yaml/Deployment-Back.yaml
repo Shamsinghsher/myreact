@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loginback
+  labels:
+    app: back
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: loginback
+  template:
+    metadata:
+      labels:
+        app: loginback
+    spec:
+      containers:
+      - name: back
+        image: backend
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+
+---
+# Service for the Backend Web API
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: loginback
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 2000
+
